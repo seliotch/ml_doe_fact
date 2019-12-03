@@ -7,10 +7,10 @@ sys.path.append('..')
 from model import Model
 
 #set high and low values for 4 factor, 2 level, full factorial
-a_low = 10**(-3)
-a_high = 10**(-4)
-b_low = 10**(-4)
-b_high = 10**(-5)
+a_low = 10**(-4)
+a_high = 10**(-3)
+b_low = 10**(-5)
+b_high = 10**(-4)
 c_low = 0.4
 c_high = 0.8
 d_low = 0.4
