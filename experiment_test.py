@@ -5,7 +5,7 @@ import pandas as pd
 sys.path.append('..')
 from model import Model
 
-#set high and low values for 4 factor, 2 level, full factorial
+# set high and low values for 4 factor, 2 level, full factorial
 a_low = 10**(-3)
 a_high = 10**(-4)
 b_low = 10**(-4)
@@ -15,7 +15,7 @@ c_high = 0.8
 d_low = 0.4
 d_high = 0.8
 
-#list the recipes per the levels, full factorial
+# list the recipes per the levels, full factorial
 null = [a_low, b_low, c_low, d_low]
 a = [a_high, b_low, c_low, d_low]
 b = [a_low, b_high, c_low, d_low]
@@ -33,22 +33,14 @@ acd = [a_high, b_low, c_high, d_high]
 bcd = [a_low, b_high, c_high, d_high]
 abcd = [a_high, b_high, c_high, d_high]
 
-
-#flatten output list from each run {val_loss, val_acc, total_time} 
+# flatten output list from each run {val_loss, val_acc, total_time} 
 def flatten(x):
     if isinstance(x, collections.Iterable):
         return [a for i in x for a in flatten(i)]
     else:
         return [x]
 
-
-# running 4 repications of a full factorial
-recipe_list_rep1 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep2 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep3 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep4 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-
-## This handles the experiment
+# This handles the experiment
 def experiment(recipe_list):
     all_results = []
     #iterate over
@@ -58,13 +50,7 @@ def experiment(recipe_list):
         all_results.append(flatten(one_result))
     return all_results
 
-###
-rep1_listout = generate_model(recipe_list_rep1)
-rep2_listout = generate_model(recipe_list_rep2)
-rep3_listout = generate_model(recipe_list_rep3)
-rep4_listout = generate_model(recipe_list_rep4)
-
-
+# outputs results as csv
 def csv_out(input_list):
     #make a data frame
     df = pd.DataFrame(input_lists)
