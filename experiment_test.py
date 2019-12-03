@@ -56,19 +56,16 @@ def experiment(recipe_list):
 ## input a list of replications and name as string a output a single csv file
 def csv_out(input_list, name):
     df_final = pd.DataFrame()
-    print(range(len(input_list)))
     for i in range(len(input_list)):
         df = pd.DataFrame(input_list[i])
         df_final = pd.concat([df_final, df])
-        #output csv
+    #output csv
     df_final.to_csv(name + '.csv', index=False)
     return df_final
 
 
 # define which recipes you will run for each
 recipe_list_rep1 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep2 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep3 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
 
 
 # define the list which will hold all data for each replication
