@@ -1,11 +1,12 @@
 import sys
 import collections
 import pandas as pd
+import tensorflow as tf
 
 sys.path.append('..')
 from model import Model
 
-# set high and low values for 4 factor, 2 level, full factorial
+#set high and low values for 4 factor, 2 level, full factorial
 a_low = 10**(-3)
 a_high = 10**(-4)
 b_low = 10**(-4)
@@ -15,7 +16,7 @@ c_high = 0.8
 d_low = 0.4
 d_high = 0.8
 
-# list the recipes per the levels, full factorial
+#list the recipes per the levels, full factorial
 null = [a_low, b_low, c_low, d_low]
 a = [a_high, b_low, c_low, d_low]
 b = [a_low, b_high, c_low, d_low]
@@ -33,50 +34,50 @@ acd = [a_high, b_low, c_high, d_high]
 bcd = [a_low, b_high, c_high, d_high]
 abcd = [a_high, b_high, c_high, d_high]
 
-# flatten output list from each run {val_loss, val_acc, total_time} 
+
+#flatten output list from each run {val_loss, val_acc, total_time} 
 def flatten(x):
     if isinstance(x, collections.Iterable):
         return [a for i in x for a in flatten(i)]
     else:
         return [x]
 
-# This handles the experiment
+# This handles the experiment and adds results to a list
 def experiment(recipe_list):
-    all_results = []
+    all_results_rep = []
     #iterate over
     for item in recipe_list:
         model_recipe = Model(test = True, learning_rate_1 = item[0], learning_rate_2 = item[1], dropout_rate_1 = item[2], dropout_rate_2 = item[3])
         one_result = model_recipe.runexample()
-        all_results.append(flatten(one_result))
-    return all_results
+        all_results_rep.append(flatten(one_result))
+        tf.keras.backend.clear_session()
+    return all_results_rep
 
-# outputs results as csv
-def csv_out(input_list):
-    #make a data frame
-    df = pd.DataFrame(input_lists)
-    #output csv
-    df.to_csv( str(input_list) + '_test2.csv', index=False)
+## input a list of replications and name as string a output a single csv file
+def csv_out(input_list, name):
+    df_final = pd.DataFrame()
+    print(range(len(input_list)))
+    for i in range(len(input_list)):
+        df = pd.DataFrame(input_list[i])
+        df_final = pd.concat([df_final, df])
+        #output csv
+    df_final.to_csv(name + '.csv', index=False)
+    return df_final
 
 
-    
-
-    
-
-    
 # define which recipes you will run for each
 recipe_list_rep1 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
 recipe_list_rep2 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
 recipe_list_rep3 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
-recipe_list_rep4 = [null, a, b, ab, c, ac, bc, abc, d, ad, bd, abd, cd, acd, bcd, abcd]
+
 
 # define the list which will hold all data for each replication
-rep1_listout = generate_model(recipe_list_rep1)
-rep2_listout = generate_model(recipe_list_rep2)
-rep3_listout = generate_model(recipe_list_rep3)
-rep4_listout = generate_model(recipe_list_rep4)
+rep1_listout = experiment(recipe_list_rep1)
+rep2_listout = experiment(recipe_list_rep2)
+rep3_listout = experiment(recipe_list_rep3)
 
-#output each set of results to a file
-csv_out(rep1_listout)
-csv_out(rep2_listout)
-csv_out(rep3_listout)
-csv_out(rep4_listout)
+# list of results output
+result_list = [rep1_listout, rep2_listout, rep3_listout]
+
+# create csv
+csv_out(result_list, "3rep_test_true")
