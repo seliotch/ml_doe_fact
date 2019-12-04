@@ -9,6 +9,6 @@ NOTE
 
 3) to run as a .py it needs to be in comand prompty (on talapas server), if you want to run it as an interactive then copy and paste the contents to a new ipynb file in talapas
 
-
+4) if some sort of error occurs but it seems that the model may have been trained and evaluated use print(rep1_outlist) in a seperate execution box, but in the same file.  it may output the values
 
 
