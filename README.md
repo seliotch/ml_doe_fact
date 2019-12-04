@@ -7,5 +7,8 @@ NOTE
 
 2) place this file in the mldoe "notebooks" folder
 
+3) to run as a .py it needs to be in comand prompty (on talapas server), if you want to run it as an interactive then copy and paste the contents to a new ipynb file in talapas
+
+
 
 
